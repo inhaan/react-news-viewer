@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import NewsHeadline from "../components/NewsHeadline";
 import { Article } from "../interfaces";
@@ -19,24 +19,32 @@ interface URLParams extends Record<string, string> {
 const NewsList = () => {
   const { category } = useParams<URLParams>();
   const [articles, setArticles] = useState<Article[] | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const getApiUrl = (apiKey: string, category?: string) => {
+  const getArticles = useCallback(async (apiKey: string, category?: string) => {
     let url = `https://newsapi.org/v2/top-headlines?country=kr&apiKey=${apiKey}`;
     if (category) {
       url += `&category=${category}`;
     }
-    return url;
-  };
+    const response = await axios.get<HeadlinesResponse>(url);
+    return response.data.articles;
+  }, []);
 
   useEffect(() => {
     (async () => {
-      const response = await axios.get<HeadlinesResponse>(
-        getApiUrl(API_KEY, category)
-      );
-      setArticles(response.data.articles);
+      setLoading(true);
+
+      try {
+        setArticles(await getArticles(API_KEY, category));
+      } catch {}
+
+      setLoading(false);
     })();
   }, [category]);
 
+  if (loading) {
+    return null;
+  }
   return (
     <ul>
       {articles?.map((article) => (

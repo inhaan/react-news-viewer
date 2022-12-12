@@ -1,4 +1,3 @@
-import { CSSProperties } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
@@ -12,16 +11,28 @@ const menus = [
   { url: "/technology", name: "기술" },
 ];
 
-const activeStyle: CSSProperties = {
-  color: "green",
-};
-
 const Container = styled.ul`
   display: flex;
   gap: 1rem;
   padding: 1rem;
+`;
+
+const MenuLink = styled(NavLink)`
   font-size: 1.1rem;
   font-weight: 600;
+
+  padding-bottom: 0.25rem;
+
+  &:hover {
+    color: #495057;
+  }
+  &.active {
+    border-bottom: 2px solid #22b9cf;
+    color: #22b8cf;
+    &:hover {
+      color: #3bc9db;
+    }
+  }
 `;
 
 const Navigation = () => {
@@ -29,12 +40,7 @@ const Navigation = () => {
     <Container>
       {menus.map((menu) => (
         <li key={menu.url}>
-          <NavLink
-            to={menu.url}
-            style={({ isActive }) => (isActive ? activeStyle : undefined)}
-          >
-            {menu.name}
-          </NavLink>
+          <MenuLink to={menu.url}>{menu.name}</MenuLink>
         </li>
       ))}
     </Container>

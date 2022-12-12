@@ -1,5 +1,6 @@
 import { Article } from "../interfaces";
 import styled from "styled-components";
+import { memo } from "react";
 
 interface NewsHeadlineProps {
   article: Article;
@@ -7,14 +8,13 @@ interface NewsHeadlineProps {
 
 const Container = styled.li`
   display: flex;
-  margin: 1rem;
-  gap: 1rem;
+  margin: 3rem 1rem;
+  gap: 1.2rem;
 `;
 const ImageContainer = styled.div`
   width: 150px;
-  height: 150px;
+  height: 100px;
   overflow: hidden;
-  flex-grow: 1;
   flex-shrink: 0;
 `;
 const NewsImage = styled.img`
@@ -30,12 +30,17 @@ const Title = styled.div`
 const NewsHeadline = ({ article }: NewsHeadlineProps) => {
   return (
     <Container>
-      <ImageContainer>
-        <NewsImage src={article.urlToImage} />
-      </ImageContainer>
+      {article.urlToImage && (
+        <ImageContainer>
+          <a href={article.url} target="_blank" rel="noopener noreferrer">
+            <NewsImage src={article.urlToImage} />
+          </a>
+        </ImageContainer>
+      )}
+
       <div>
         <Title>
-          <a href={article.url} target="_blank">
+          <a href={article.url} target="_blank" rel="noopener noreferrer">
             {article.title}
           </a>
         </Title>
@@ -45,4 +50,4 @@ const NewsHeadline = ({ article }: NewsHeadlineProps) => {
   );
 };
 
-export default NewsHeadline;
+export default memo(NewsHeadline);
