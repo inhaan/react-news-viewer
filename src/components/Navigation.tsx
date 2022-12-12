@@ -1,14 +1,14 @@
-import { NavLink } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 const menus = [
-  { url: "/", name: "전체보기" },
-  { url: "/business", name: "비즈니스" },
-  { url: "/entertainment", name: "엔터테인먼트" },
-  { url: "/health", name: "건강" },
-  { url: "/science", name: "과학" },
-  { url: "/sports", name: "스포츠" },
-  { url: "/technology", name: "기술" },
+  { url: "/react-news-viewer", name: "전체보기" },
+  { url: "/react-news-viewer/business", name: "비즈니스" },
+  { url: "/react-news-viewer/entertainment", name: "엔터테인먼트" },
+  { url: "/react-news-viewer/health", name: "건강" },
+  { url: "/react-news-viewer/science", name: "과학" },
+  { url: "/react-news-viewer/sports", name: "스포츠" },
+  { url: "/react-news-viewer/technology", name: "기술" },
 ];
 
 const Container = styled.ul`
@@ -17,7 +17,7 @@ const Container = styled.ul`
   padding: 1rem;
 `;
 
-const MenuLink = styled(NavLink)`
+const MenuLink = styled(Link)`
   font-size: 1.1rem;
   font-weight: 600;
 
@@ -36,11 +36,18 @@ const MenuLink = styled(NavLink)`
 `;
 
 const Navigation = () => {
+  const { pathname } = useLocation();
+
   return (
     <Container>
       {menus.map((menu) => (
         <li key={menu.url}>
-          <MenuLink to={menu.url}>{menu.name}</MenuLink>
+          <MenuLink
+            to={menu.url}
+            className={pathname === menu.url ? "active" : ""}
+          >
+            {menu.name}
+          </MenuLink>
         </li>
       ))}
     </Container>
