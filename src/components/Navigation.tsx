@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
@@ -38,13 +39,17 @@ const MenuLink = styled(Link)`
 const Navigation = () => {
   const { pathname } = useLocation();
 
+  const isActive = useCallback((currentUrl: string, checkUrl: string) => {
+    return [checkUrl, checkUrl + "/"].includes(currentUrl);
+  }, []);
+
   return (
     <Container>
       {menus.map((menu) => (
         <li key={menu.url}>
           <MenuLink
             to={menu.url}
-            className={pathname === menu.url ? "active" : ""}
+            className={isActive(pathname, menu.url) ? "active" : ""}
           >
             {menu.name}
           </MenuLink>
