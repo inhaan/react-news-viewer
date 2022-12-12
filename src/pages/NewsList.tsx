@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import NewsHeadline from "../components/NewsHeadline";
 import { Article } from "../interfaces";
+import sample from "../sample";
 
 const API_KEY = "35d0a17655044817af00e526fbdf2348";
 
@@ -22,6 +23,11 @@ const NewsList = () => {
   const [loading, setLoading] = useState(false);
 
   const getArticles = useCallback(async (apiKey: string, category?: string) => {
+    const sampleData = sample[category || "all"];
+    if (sampleData) {
+      return sampleData;
+    }
+
     let url = `https://newsapi.org/v2/top-headlines?country=kr&apiKey=${apiKey}`;
     if (category) {
       url += `&category=${category}`;
